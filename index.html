@@ -1,3 +1,76 @@
-****************
-* MrozTech.com *
-****************
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MrozTech.com</title>
+  <style>
+    body {
+      background-color: #000;
+      color: #00ff66;
+      font-family: "Courier New", monospace;
+      white-space: pre;
+      margin: 0;
+      padding: 2em;
+    }
+    #screen {
+      max-width: 90ch;
+      margin: 0 auto;
+      white-space: pre-wrap;
+      line-height: 1.2em;
+    }
+    .blink {
+      animation: blink 1s step-end infinite;
+    }
+    @keyframes blink {
+      50% { opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div id="screen"></div>
+
+  <script>
+    const lines = [
+`Initializing system...`,
+`Loading modules...`,
+`Establishing network link...`,
+`Authenticating user: admin@mroztech.com`,
+`Access granted.`,
+``,
+
+` __  __                     _______        _     `,
+`|  \\/  |                   |__   __|      | |    `,
+`| \\  / | ___ _ __ ___  ____   | | ___  ___| |__  `,
+`| |\\/| |/ _ \\ '__/ _ \\|_  /   | |/ _ \\/ __| '_ \\ `,
+`| |  | |  __/ | | (_) |/ /    | |  __/ (__| | | |`,
+`|_|  |_|\\___|_|  \\___//___|   |_|\\___|\\___|_| |_|`,
+`           M r o z T e c h   . c o m`,
+``,
+`Secure • Scalable • Reliable IT Solutions`,
+``,
+`System ready<span class="blink">_</span>`
+    ];
+
+    const screen = document.getElementById("screen");
+
+    let i = 0;
+
+    function typeLine() {
+      if (i < lines.length) {
+        const line = lines[i];
+        const div = document.createElement("div");
+        div.innerHTML = line;
+        screen.appendChild(div);
+        window.scrollTo(0, document.body.scrollHeight);
+        i++;
+        setTimeout(typeLine, 200); // typing speed
+      }
+    }
+
+    typeLine();
+  </script>
+</body>
+</html>
+
+
