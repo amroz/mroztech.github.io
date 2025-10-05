@@ -19,12 +19,8 @@
       white-space: pre-wrap;
       line-height: 1.2em;
     }
-    .blink {
-      animation: blink 1s step-end infinite;
-    }
-    @keyframes blink {
-      50% { opacity: 0; }
-    }
+    .blink { animation: blink 1s step-end infinite; }
+    @keyframes blink { 50% { opacity: 0; } }
   </style>
 </head>
 <body>
@@ -39,13 +35,13 @@
 `Access granted.`,
 ``,
 
-` __  __                     _______        _     `,
-`|  \\/  |                   |__   __|      | |    `,
-`| \\  / | ___ _ __ ___  ____   | | ___  ___| |__  `,
-`| |\\/| |/ _ \\ '__/ _ \\|_  /   | |/ _ \\/ __| '_ \\ `,
-`| |  | |  __/ | | (_) |/ /    | |  __/ (__| | | |`,
-`|_|  |_|\\___|_|  \\___//___|   |_|\\___|\\___|_| |_|`,
-`           M r o z T e c h   . c o m`,
+`##   ##  #####   ######  #######      #######        #      `,
+`##   ## ##   ##  ##   ## ##            ##   ##      ###     `,
+`## # ## ##   ##  ##   ## ######        ##   ##     #####    `,
+`##### # ##   ##  ##   ## ##            ##   ##    ##   ##   `,
+`##   ##  #####   ######  #######       #######   ###   ###  `,
+``,
+`                 M r o z   T e c h   . c o m`,
 ``,
 `Secure • Scalable • Reliable IT Solutions`,
 ``,
@@ -53,18 +49,25 @@
     ];
 
     const screen = document.getElementById("screen");
-
     let i = 0;
 
     function typeLine() {
       if (i < lines.length) {
-        const line = lines[i];
         const div = document.createElement("div");
-        div.innerHTML = line;
+        div.textContent = "";            // start empty
         screen.appendChild(div);
-        window.scrollTo(0, document.body.scrollHeight);
-        i++;
-        setTimeout(typeLine, 200); // typing speed
+
+        // type each line's characters to avoid any hidden/escaped artifacts
+        const text = lines[i++];
+        let j = 0;
+        (function typeChar() {
+          if (j < text.length) {
+            div.textContent += text[j++];
+            setTimeout(typeChar, 6);     // character speed
+          } else {
+            setTimeout(typeLine, 160);   // line speed
+          }
+        })();
       }
     }
 
@@ -72,5 +75,6 @@
   </script>
 </body>
 </html>
+
 
 
