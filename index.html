@@ -1,80 +1,91 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>MrozTech.com</title>
   <style>
     body {
-      background-color: #000;
-      color: #00ff66;
-      font-family: "Courier New", monospace;
-      white-space: pre;
-      margin: 0;
-      padding: 2em;
+      background:#000; color:#00ff66;
+      font-family:"Courier New", monospace;
+      margin:0; padding:2em; white-space:pre;
     }
-    #screen {
-      max-width: 90ch;
-      margin: 0 auto;
-      white-space: pre-wrap;
-      line-height: 1.2em;
-    }
-    .blink { animation: blink 1s step-end infinite; }
-    @keyframes blink { 50% { opacity: 0; } }
+    #screen { max-width:90ch; margin:0 auto; white-space:pre-wrap; line-height:1.2em; }
+    .blink { animation:blink 1s step-end infinite; }
+    @keyframes blink { 50% { opacity:0; } }
+    .center { text-align:center; }
   </style>
 </head>
 <body>
   <div id="screen"></div>
-
   <script>
-    const lines = [
-`Initializing system...`,
-`Loading modules...`,
-`Establishing network link...`,
-`Authenticating user: admin@mroztech.com`,
-`Access granted.`,
-``,
-
-`##   ##  #####   ######  #######      #######        #      `,
-`##   ## ##   ##  ##   ## ##            ##   ##      ###     `,
-`## # ## ##   ##  ##   ## ######        ##   ##     #####    `,
-`##### # ##   ##  ##   ## ##            ##   ##    ##   ##   `,
-`##   ##  #####   ######  #######       #######   ###   ###  `,
-``,
-`                 M r o z   T e c h   . c o m`,
-``,
-`Secure • Scalable • Reliable IT Solutions`,
-``,
-`System ready<span class="blink">_</span>`
+    const boot = [
+      "Initializing system...",
+      "Loading modules...",
+      "Establishing network link...",
+      "Authenticating user: admin@mroztech.com",
+      "Access granted.",
+      ""
     ];
 
+    const BANNER = [
+      "  ++=====================================================++  ",
+      "  ||   ~~~   M R O Z   T E C H     .   C O M   ~~~       ||  ",
+      "  ++=====================================================++  "
+    ].join("\n");
+
+    const TAGLINE = "Secure • Scalable • Reliable IT Solutions";
+
     const screen = document.getElementById("screen");
-    let i = 0;
 
-    function typeLine() {
-      if (i < lines.length) {
-        const div = document.createElement("div");
-        div.textContent = "";            // start empty
-        screen.appendChild(div);
-
-        // type each line's characters to avoid any hidden/escaped artifacts
-        const text = lines[i++];
-        let j = 0;
-        (function typeChar() {
-          if (j < text.length) {
-            div.textContent += text[j++];
-            setTimeout(typeChar, 6);     // character speed
-          } else {
-            setTimeout(typeLine, 160);   // line speed
-          }
-        })();
-      }
+    // type one line as plain text (prevents hidden/HTML artifacts)
+    function typeLine(text, cb, charDelay=6) {
+      const div = document.createElement("div");
+      div.textContent = "";
+      screen.appendChild(div);
+      let i = 0;
+      (function tick(){
+        if (i < text.length) {
+          div.textContent += text[i++];
+          setTimeout(tick, charDelay);
+        } else {
+          cb && cb();
+        }
+      })();
     }
 
-    typeLine();
+    function typeSequence(lines, i=0) {
+      if (i >= lines.length) return afterBoot();
+      typeLine(lines[i], () => typeSequence(lines, i+1), 6);
+    }
+
+    function afterBoot() {
+      // Banner (single append with textContent for exact fidelity)
+      const pre = document.createElement("pre");
+      pre.textContent = BANNER;
+      screen.appendChild(pre);
+
+      // Plain-text name under banner for absolute clarity
+      const name = document.createElement("div");
+      name.className = "center";
+      name.textContent = "MrozTech.com";
+      screen.appendChild(name);
+
+      screen.appendChild(document.createElement("div")).textContent = "";
+      screen.appendChild(document.createElement("div")).textContent = TAGLINE;
+      screen.appendChild(document.createElement("div")).textContent = "";
+
+      const ready = document.createElement("div");
+      ready.textContent = "System ready";
+      const cursor = document.createElement("span");
+      cursor.className = "blink";
+      cursor.textContent = "_";
+      ready.appendChild(cursor);
+      screen.appendChild(ready);
+      window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    typeSequence(boot);
   </script>
 </body>
 </html>
-
-
-
